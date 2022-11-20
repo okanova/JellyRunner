@@ -38,46 +38,7 @@ public class PlayerGroup : MonoBehaviour
 
       StartCoroutine("Movement");
    }
-
-
-   private void Update()
-   {
-      if (Input.GetKeyDown(KeyCode.A) && maxPositionsCount + 1 > playerCount)
-      {
-         if (state == "many")
-         {
-            Player temp = Instantiate(player);
-            AddCharacter(temp);
-         }
-         else
-         {
-            playerCount++;
-            ChangeSize();
-         }
-      }
-
-      if (Input.GetKeyDown(KeyCode.D) && playerList.Count > 0)
-      {
-         if (playerCount - 1 == 0)
-         {
-            
-         }
-         else
-         {
-            if (state == "many")
-            {
-               Player temp = playerList[playerList.Count - 1];
-               RemoveCharacter(temp);
-            }
-            else
-            {
-               playerCount--;
-               ChangeSize();
-            }
-         }
-      }
-   }
-
+   
    
    public void CreatePositions()
    {
@@ -123,6 +84,7 @@ public class PlayerGroup : MonoBehaviour
    public void AddCharacter(Player temp)
    {
       bool isNull = false;
+      
       if (temp == null)
       {
          temp = Instantiate(player);
@@ -132,6 +94,8 @@ public class PlayerGroup : MonoBehaviour
       {
          playerCount++;
       }
+
+      temp.inList = true;
       
       playerList.Add(temp);
       temp.animator = temp.GetComponentInChildren<Animator>();
@@ -148,7 +112,13 @@ public class PlayerGroup : MonoBehaviour
                temp.transform.position = positions[0].position;
             }
             
-            temp.transform.DOLocalMove(Vector3.zero, moveTime).SetEase(Ease.Linear);
+            temp.transform.DOLocalMove(Vector3.zero, moveTime).SetEase(Ease.Linear).OnUpdate(() =>
+            {
+               temp.transform.LookAt(transform.parent);
+            }).OnComplete(() =>
+            {
+               temp.transform.LookAt(transform.position + Vector3.forward);
+            });
             return;
          }
       }
@@ -220,7 +190,7 @@ public class PlayerGroup : MonoBehaviour
       
       while (true)
       {
-         currentPos.z += speed.y / 1000;
+         currentPos.z += speed.y / 1000f;
          timer += Time.deltaTime;
 
          if (Input.GetMouseButtonDown(0))
@@ -232,7 +202,7 @@ public class PlayerGroup : MonoBehaviour
          if (Input.GetMouseButton(0))
          {
             currentX = Input.mousePosition.x;
-            currentPos.x = Mathf.Clamp(currentPos.x + ((currentX - x) * speed.x / 1000), -clamp, clamp);
+            currentPos.x = Mathf.Clamp(currentPos.x + ((currentX - x) * speed.x / 10000f), -clamp, clamp);
          }
 
          if (Input.GetMouseButtonUp(0))
