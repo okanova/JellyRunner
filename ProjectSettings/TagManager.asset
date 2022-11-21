@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Obstacle
+  - FxTemporaire
+  - Fan
+  - TriggerY
   layers:
   - Default
   - TransparentFX

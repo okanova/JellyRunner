@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using Unity.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class PlayerGroup : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class PlayerGroup : MonoBehaviour
    public Player player;
    public float sizeChangerValue;
    public float changeTime;
+   public ParticleSystem deathParticle;
    [ReadOnly] public string state = "one";
    [ReadOnly] public List<Player> playerList;
    [ReadOnly] public int playerCount;
@@ -84,7 +86,7 @@ public class PlayerGroup : MonoBehaviour
    public void AddCharacter(Player temp)
    {
       bool isNull = false;
-      
+
       if (temp == null)
       {
          temp = Instantiate(player);
@@ -100,7 +102,11 @@ public class PlayerGroup : MonoBehaviour
       playerList.Add(temp);
       temp.animator = temp.GetComponentInChildren<Animator>();
       temp.animator.Play("Run");
-         
+      
+      temp.emojis.Play("AnimationMovement");
+      int random = Random.Range(0, temp.emojis.transform.childCount);
+      temp.emojis.transform.GetChild(random).gameObject.SetActive(true);
+
       for (int i = 0; i < positions.Count; i++)
       {
          if (positions[i].childCount == 0)
@@ -140,6 +146,8 @@ public class PlayerGroup : MonoBehaviour
       else
       {
          playerCount--;
+         ParticleSystem particle = Instantiate(deathParticle);
+         particle.transform.position = temp.transform.position;
       }
 
       Destroy(temp.gameObject);
@@ -187,7 +195,7 @@ public class PlayerGroup : MonoBehaviour
       Vector3 currentPos = Vector3.zero;
       float x = 0;
       float currentX = 0;
-      
+
       while (true)
       {
          currentPos.z += speed.y / 1000f;
@@ -204,6 +212,9 @@ public class PlayerGroup : MonoBehaviour
             currentX = Input.mousePosition.x;
             currentPos.x = Mathf.Clamp(currentPos.x + ((currentX - x) * speed.x / 10000f), -clamp, clamp);
          }
+         
+         transform.rotation = Quaternion.LookRotation
+            (transform.position + Vector3.forward);
 
          if (Input.GetMouseButtonUp(0))
          {

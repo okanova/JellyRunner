@@ -7,10 +7,12 @@ public class Player : MonoBehaviour
 {
    public Animator animator;
    public bool inList;
-
-   private void OnTriggerEnter(Collider other)
+   public Animator emojis;
+   
+   
+   private void OnCollisionEnter(Collision other)
    {
-      Player otherPlayer = other.GetComponent<Player>();
+      Player otherPlayer = other.gameObject.GetComponent<Player>();
       
       if (otherPlayer != null)
       {
@@ -28,19 +30,18 @@ public class Player : MonoBehaviour
             Destroy(otherPlayer.gameObject);
          }
       }
-      else if (other.CompareTag("Obstacle"))
+      else if (other.gameObject.CompareTag("Obstacle"))
       {
-         if ( GameManager.Instance.playerGroup.playerCount - 1 == 0)
+         if (GameManager.Instance.playerGroup.playerCount - 1 == 0)
          {
             GameManager.Instance.Lose();
+            Destroy(gameObject);
          }
          else
          {
             if ( GameManager.Instance.playerGroup.state == "many")
             {
-               Player temp =  GameManager.Instance.playerGroup.playerList[
-                  GameManager.Instance.playerGroup.playerList.Count - 1];
-               GameManager.Instance.playerGroup.RemoveCharacter(temp);
+               GameManager.Instance.playerGroup.RemoveCharacter(this);
             }
             else
             {
