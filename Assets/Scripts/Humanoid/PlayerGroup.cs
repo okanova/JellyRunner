@@ -101,6 +101,7 @@ public class PlayerGroup : MonoBehaviour
       
       playerList.Add(temp);
       temp.animator = temp.GetComponentInChildren<Animator>();
+      temp.rigidbody = temp.GetComponentInChildren<Rigidbody>();
       temp.animator.Play("Run");
       
       temp.emojis.Play("AnimationMovement");

@@ -1,13 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Player : MonoBehaviour
 {
    public Animator animator;
    public bool inList;
    public Animator emojis;
+   public Rigidbody rigidbody;
    
    
    private void OnCollisionEnter(Collision other)
@@ -50,6 +53,42 @@ public class Player : MonoBehaviour
                GameManager.Instance.playerGroup.ChangeSize();
             }
          }
+      }
+   }
+
+
+   private void OnTriggerEnter(Collider other)
+   {
+
+      if (other.CompareTag("TriggerY"))
+      {
+         rigidbody.constraints = RigidbodyConstraints.None;
+         rigidbody.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX
+                                                                     | RigidbodyConstraints.FreezePositionZ;
+      }
+      
+      else if (other.CompareTag("Fan"))
+      {
+         if (GameManager.Instance.playerGroup.state == "one")
+            return;
+         
+         rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+         
+         transform.DOLocalMoveY(1.5f + transform.localPosition.y, 1.1f).SetEase(Ease.OutSine)
+            .OnComplete(() =>
+            {
+               transform.DOLocalMoveY(0, 1.2f).SetEase(Ease.InSine);
+            });
+      }
+      
+      else if (other.CompareTag("Space"))
+      {
+         if (GameManager.Instance.playerGroup.state == "one")
+            return;
+         
+         rigidbody.constraints = RigidbodyConstraints.None;
+         rigidbody.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX
+                                                                     | RigidbodyConstraints.FreezePositionZ;
       }
    }
 }
