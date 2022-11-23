@@ -9,6 +9,7 @@ TagManager:
   - Fan
   - TriggerY
   - Space
+  - Lava
   layers:
   - Default
   - TransparentFX

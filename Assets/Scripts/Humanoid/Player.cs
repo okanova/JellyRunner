@@ -90,5 +90,29 @@ public class Player : MonoBehaviour
          rigidbody.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX
                                                                      | RigidbodyConstraints.FreezePositionZ;
       }
+      
+      else if (other.CompareTag("Lava"))
+      {
+         ParticleSystem lava = Instantiate(GameManager.Instance.playerGroup.lavaParticle);
+         lava.transform.position = transform.position;
+         
+         if (GameManager.Instance.playerGroup.playerCount - 1 == 0)
+         {
+            GameManager.Instance.Lose();
+            Destroy(gameObject);
+         }
+         else
+         {
+            if ( GameManager.Instance.playerGroup.state == "many")
+            {
+               GameManager.Instance.playerGroup.RemoveCharacter(this);
+            }
+            else
+            {
+               GameManager.Instance.Lose();
+               Destroy(gameObject);
+            }
+         }
+      }
    }
 }

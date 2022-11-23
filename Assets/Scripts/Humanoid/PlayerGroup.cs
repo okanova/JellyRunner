@@ -13,6 +13,7 @@ public class PlayerGroup : MonoBehaviour
    public float sizeChangerValue;
    public float changeTime;
    public ParticleSystem deathParticle;
+   public ParticleSystem lavaParticle;
    [ReadOnly] public string state = "one";
    [ReadOnly] public List<Player> playerList;
    [ReadOnly] public int playerCount;
