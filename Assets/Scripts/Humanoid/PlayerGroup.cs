@@ -23,6 +23,7 @@ public class PlayerGroup : MonoBehaviour
    public Vector2 speed;
    public float oneClickTime;
    public float clamp;
+   public float bigManAnimationSpeed;
 
    [Space(10)]
    [Header("Position Settings")]
@@ -110,7 +111,8 @@ public class PlayerGroup : MonoBehaviour
       temp.animator = temp.GetComponentInChildren<Animator>();
       temp.rigidbody = temp.GetComponentInChildren<Rigidbody>();
       temp.animator.Play("Run");
-      
+      temp.animator.speed = 1f;
+
       temp.emojis.Play("AnimationMovement");
       int random = Random.Range(0, temp.emojis.transform.childCount);
       temp.emojis.transform.GetChild(random).gameObject.SetActive(true);
@@ -180,7 +182,7 @@ public class PlayerGroup : MonoBehaviour
          playerList[0].transform.localScale = Vector3.one;
          
          state = "many";
-         
+
       }
       else if (state == "many")
       {
@@ -193,6 +195,8 @@ public class PlayerGroup : MonoBehaviour
          }
          
          state = "one";
+
+         playerList[0].animator.speed = bigManAnimationSpeed;
       }
    }
 

@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
    public bool inList;
    public Animator emojis;
    public Rigidbody rigidbody;
+   public TrailRenderer trail;
 
    private void OnCollisionEnter(Collision other)
    {
@@ -66,8 +67,10 @@ public class Player : MonoBehaviour
             foreach (var rb in rigidbodies)
             {
                rb.isKinematic = false;
-               Vector3 dir = (rb.transform.position - transform.position);
-               float power = (1 / Mathf.Pow(Vector3.Distance(rb.transform.position, transform.position), 
+               Vector3 targetPos = transform.position;
+               targetPos.y = 0;
+               Vector3 dir = (rb.transform.position - targetPos);
+               float power = (1 / Mathf.Pow(Vector3.Distance(rb.transform.position, targetPos), 
                   GameManager.Instance.playerGroup.powerOfDistance)) * GameManager.Instance.playerGroup.power;
                rb.AddForce(dir * power);
             }
@@ -149,10 +152,12 @@ public class Player : MonoBehaviour
       }
       else if (other.CompareTag("Finish"))
       {
-         if (GameManager.Instance.playerGroup.state != "One")
+         if (GameManager.Instance.playerGroup.state != "one")
             GameManager.Instance.playerGroup.ChangeState();
 
          GameManager.Instance.playerGroup.state = "onlyOne";
+         trail.GetComponentInChildren<TrailRenderer>(true);
+         trail.gameObject.SetActive(true);
       }
    }
 
