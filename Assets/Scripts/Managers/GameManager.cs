@@ -40,11 +40,11 @@ public class GameManager : MonoBehaviour
 
     public void Win()
     {
-        
+        //gold hesaplama
     }
 
     public void Lose()
     {
-        
+        playerGroup.speed = Vector2.zero;
     }
 }

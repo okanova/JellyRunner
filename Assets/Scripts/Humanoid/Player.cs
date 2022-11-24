@@ -37,10 +37,11 @@ public class Player : MonoBehaviour
          if (GameManager.Instance.playerGroup.playerCount - 1 == 0)
          {
             GameManager.Instance.Lose();
-            Destroy(gameObject);
-            
+
             ParticleSystem particle = Instantiate(GameManager.Instance.playerGroup.deathParticle);
             particle.transform.position = transform.position;
+            
+            Destroy(gameObject);
          }
          else
          {
@@ -76,16 +77,26 @@ public class Player : MonoBehaviour
             if (GameManager.Instance.playerGroup.playerCount - 1 == 0)
             {
                GameManager.Instance.Lose();
-               Destroy(gameObject);
-            
+
                ParticleSystem particle = Instantiate(GameManager.Instance.playerGroup.deathParticle);
                particle.transform.position = transform.position;
+               
+               Destroy(gameObject);
             }
             else
             {
                GameManager.Instance.playerGroup.RemoveCharacter(this);
             }
          }
+      }
+      else if (other.gameObject.CompareTag("End"))
+      {
+         GameManager.Instance.Win();
+         
+         ParticleSystem particle = Instantiate(GameManager.Instance.playerGroup.deathParticle);
+         particle.transform.position = transform.position;
+         
+         Destroy(gameObject);
       }
    }
 
@@ -135,6 +146,13 @@ public class Player : MonoBehaviour
                Destroy(gameObject);
             }
          }
+      }
+      else if (other.CompareTag("Finish"))
+      {
+         if (GameManager.Instance.playerGroup.state != "One")
+            GameManager.Instance.playerGroup.ChangeState();
+
+         GameManager.Instance.playerGroup.state = "onlyOne";
       }
    }
 
