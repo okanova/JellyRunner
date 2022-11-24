@@ -12,6 +12,7 @@ TagManager:
   - Lava
   - Wall
   - End
+  - Gold
   layers:
   - Default
   - TransparentFX
