@@ -55,6 +55,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8504908663088054512, guid: a9f654d40e3096e43bd7b1a4b100bd58, type: 3}
+      propertyPath: m_Size.x
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9f654d40e3096e43bd7b1a4b100bd58, type: 3}
 --- !u!1001 &4886878003222100365
@@ -110,7 +114,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8252834237366683105, guid: dc5731385d0c9f143833a4cf10945d87, type: 3}
       propertyPath: m_Name
-      value: Lava&Fan
+      value: Lava&Fan Variant
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dc5731385d0c9f143833a4cf10945d87, type: 3}

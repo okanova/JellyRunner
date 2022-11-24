@@ -39,6 +39,9 @@ public class Player : MonoBehaviour
          {
             GameManager.Instance.Lose();
             Destroy(gameObject);
+            
+            ParticleSystem particle = Instantiate(GameManager.Instance.playerGroup.deathParticle);
+            particle.transform.position = transform.position;
          }
          else
          {
@@ -74,10 +77,10 @@ public class Player : MonoBehaviour
          
          rigidbody.constraints = RigidbodyConstraints.FreezeAll;
          
-         transform.DOLocalMoveY(1.5f + transform.localPosition.y, 1.1f).SetEase(Ease.OutSine)
+         transform.DOLocalMoveY(2f + transform.localPosition.y, 1.25f).SetEase(Ease.OutSine)
             .OnComplete(() =>
             {
-               transform.DOLocalMoveY(0, 1.2f).SetEase(Ease.InSine);
+               transform.DOLocalMoveY(0, 1.25f).SetEase(Ease.InSine);
             });
       }
       
