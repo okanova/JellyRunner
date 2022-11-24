@@ -10,6 +10,7 @@ TagManager:
   - TriggerY
   - Space
   - Lava
+  - Wall
   layers:
   - Default
   - TransparentFX
@@ -17,9 +18,9 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Brick
+  - Player
+  - Wall
   - 
   - 
   - 

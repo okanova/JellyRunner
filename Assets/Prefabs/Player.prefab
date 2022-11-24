@@ -731,7 +731,7 @@ GameObject:
   - component: {fileID: 8700424895593789952}
   - component: {fileID: 2113486651386558276}
   - component: {fileID: 8460384004599363236}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -769,6 +769,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   inList: 0
   emojis: {fileID: 6770435446828581470}
+  rigidbody: {fileID: 0}
 --- !u!136 &2113486651386558276
 CapsuleCollider:
   m_ObjectHideFlags: 0

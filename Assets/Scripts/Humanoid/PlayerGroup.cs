@@ -33,6 +33,12 @@ public class PlayerGroup : MonoBehaviour
    [ReadOnly] public int maxPositionsCount;
    [ReadOnly] public List<Transform> positions;
 
+   [Space(10)] 
+   [Header("Wall")] 
+   public float power;
+   public int powerOfDistance;
+   
+
    private void Start()
    {
       CreatePositions();

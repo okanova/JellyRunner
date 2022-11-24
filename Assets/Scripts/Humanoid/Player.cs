@@ -11,8 +11,7 @@ public class Player : MonoBehaviour
    public bool inList;
    public Animator emojis;
    public Rigidbody rigidbody;
-   
-   
+
    private void OnCollisionEnter(Collision other)
    {
       Player otherPlayer = other.gameObject.GetComponent<Player>();
@@ -57,6 +56,37 @@ public class Player : MonoBehaviour
             }
          }
       }
+      else if (other.gameObject.CompareTag("Wall"))
+      {
+         if (GameManager.Instance.playerGroup.state == "one")
+         {
+            Rigidbody[] rigidbodies = other.gameObject.GetComponentsInChildren<Rigidbody>();
+
+            foreach (var rb in rigidbodies)
+            {
+               rb.isKinematic = false;
+               Vector3 dir = (rb.transform.position - transform.position);
+               float power = (1 / Mathf.Pow(Vector3.Distance(rb.transform.position, transform.position), 
+                  GameManager.Instance.playerGroup.powerOfDistance)) * GameManager.Instance.playerGroup.power;
+               rb.AddForce(dir * power);
+            }
+         }
+         else
+         {
+            if (GameManager.Instance.playerGroup.playerCount - 1 == 0)
+            {
+               GameManager.Instance.Lose();
+               Destroy(gameObject);
+            
+               ParticleSystem particle = Instantiate(GameManager.Instance.playerGroup.deathParticle);
+               particle.transform.position = transform.position;
+            }
+            else
+            {
+               GameManager.Instance.playerGroup.RemoveCharacter(this);
+            }
+         }
+      }
    }
 
 
@@ -83,17 +113,6 @@ public class Player : MonoBehaviour
                transform.DOLocalMoveY(0, 1.25f).SetEase(Ease.InSine);
             });
       }
-      
-      else if (other.CompareTag("Space"))
-      {
-         if (GameManager.Instance.playerGroup.state == "one")
-            return;
-         
-         rigidbody.constraints = RigidbodyConstraints.None;
-         rigidbody.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX
-                                                                     | RigidbodyConstraints.FreezePositionZ;
-      }
-      
       else if (other.CompareTag("Lava"))
       {
          ParticleSystem lava = Instantiate(GameManager.Instance.playerGroup.lavaParticle);
@@ -116,6 +135,19 @@ public class Player : MonoBehaviour
                Destroy(gameObject);
             }
          }
+      }
+   }
+
+   private void OnTriggerStay(Collider other)
+   {
+      if (other.CompareTag("Space"))
+      {
+         if (GameManager.Instance.playerGroup.state == "one")
+            return;
+         
+         rigidbody.constraints = RigidbodyConstraints.None;
+         rigidbody.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX
+                                                                     | RigidbodyConstraints.FreezePositionZ;
       }
    }
 }
