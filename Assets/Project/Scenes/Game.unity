@@ -1146,7 +1146,7 @@ MonoBehaviour:
   playerCount: 0
   speed: {x: 1, y: 7}
   oneClickTime: 0.2
-  clamp: 1.5
+  clamp: 2.2
   bigManAnimationSpeed: 0.5
   radius: 0.2
   circleAngles: 5a0000003c0000001e000000
@@ -1154,8 +1154,8 @@ MonoBehaviour:
   position: {fileID: 4657860058892245620, guid: 37ecdcf6e99459d4aabb7a279a57b95a, type: 3}
   maxPositionsCount: 0
   positions: []
-  power: 100
-  powerOfDistance: 7
+  power: 50
+  powerOfDistance: 5
 --- !u!1001 &336523455
 PrefabInstance:
   m_ObjectHideFlags: 0

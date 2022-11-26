@@ -12,6 +12,21 @@ public class Player : MonoBehaviour
    public Animator emojis;
    public Rigidbody rigidbody;
    public TrailRenderer trail;
+   public float clamp;
+
+
+   private IEnumerator Start()
+   {
+      Vector3 pos = transform.position;
+      while (true)
+      {
+         pos = transform.position;
+         pos.x = Mathf.Clamp(transform.position.x, -clamp, clamp);
+         transform.position = pos;
+         yield return null;
+      }
+   }
+
 
    private void OnCollisionEnter(Collision other)
    {
@@ -62,7 +77,16 @@ public class Player : MonoBehaviour
       {
          if (GameManager.Instance.playerGroup.state == "one")
          {
+            Destroy(other.gameObject.GetComponent<Collider>());
             Rigidbody[] rigidbodies = other.gameObject.GetComponentsInChildren<Rigidbody>();
+            animator.Play("Jump");
+            
+            transform.DOLocalMoveY(0.5f + transform.localPosition.y, 0.25f).SetEase(Ease.OutSine)
+               .OnComplete(() =>
+               {
+                  transform.DOLocalMoveY(0, 0.25f).SetEase(Ease.InSine);
+               });
+            
 
             foreach (var rb in rigidbodies)
             {
@@ -161,8 +185,8 @@ public class Player : MonoBehaviour
             GameManager.Instance.playerGroup.ChangeState();
 
          GameManager.Instance.playerGroup.state = "onlyOne";
-         trail.GetComponentInChildren<TrailRenderer>(true);
-         trail.gameObject.SetActive(true);
+         trail.enabled = true;
+         GameManager.Instance.playerGroup.speed.y *= 1.5f;
       }
    }
 
@@ -171,7 +195,11 @@ public class Player : MonoBehaviour
       if (other.CompareTag("Space"))
       {
          if (GameManager.Instance.playerGroup.state == "one")
+         {
+            rigidbody.constraints = RigidbodyConstraints.FreezeAll;
             return;
+         }
+           
          
          rigidbody.constraints = RigidbodyConstraints.None;
          rigidbody.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionX
